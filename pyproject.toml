@@ -1,0 +1,15 @@
+[project]
+name = "prosurf"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["biotite>=0.40", "numpy", "scipy", "pandas", "pyvista", "matplotlib", "requests"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["prosurf*"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
