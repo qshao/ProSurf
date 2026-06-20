@@ -8,7 +8,6 @@ from prosurf.io.fetch import fetch_af2
 from prosurf.metric.engine_a import score_locations_a
 from prosurf.patches.cluster import cluster_patches
 from prosurf.patches.aggregate import aggregate_protein
-import biotite.structure as struc
 from prosurf.surface.sasa import residue_sasa, surface_residue_ids
 
 
