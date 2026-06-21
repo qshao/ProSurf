@@ -3,6 +3,7 @@ Z-metric consistency, MIN_PER_ORG sensitivity, within-species replication,
 and composition control. Writes data/cross_species_report.{md,pdf}."""
 import base64
 import io
+from collections import defaultdict
 from pathlib import Path
 
 import matplotlib
@@ -39,6 +40,22 @@ PHYLO_GROUP = {
     "Homo sapiens":            "Vertebrata",
     "Picrophilus torridus":    "Archaea",
     "Thermus thermophilus":    "Deinococcus-Thermus",
+}
+
+DOMAIN = {
+    "Oleispira antarctica":    "Bacteria",
+    "Caenorhabditis elegans":  "Eukaryota",
+    "Arabidopsis thaliana":    "Eukaryota",
+    "Drosophila melanogaster": "Eukaryota",
+    "Danio rerio":             "Eukaryota",
+    "Bacillus subtilis":       "Bacteria",
+    "Saccharomyces cerevisiae":"Eukaryota",
+    "Escherichia coli":        "Bacteria",
+    "Mus musculus":            "Eukaryota",
+    "Homo sapiens":            "Eukaryota",
+    "Picrophilus torridus":    "Archaea",
+    "Thermus thermophilus":    "Bacteria",
+    "Human body fluids":       "Eukaryota",
 }
 
 
@@ -90,6 +107,14 @@ def main():
     loo_min = min(r for _, r in loo_rhos)
     loo_max = max(r for _, r in loo_rhos)
 
+    loo_collapse = [o for o, r in loo_rhos if abs(r) < 0.05]
+    collapse_note = (
+        f"**Note:** dropping {' or '.join(loo_collapse)} reduces ρ to ≈0, indicating "
+        f"the cross-species OGT signal depends entirely on these organisms."
+        if loo_collapse else
+        "Signal is positive across all leave-one-out subsets."
+    )
+
     # ---- 3. Z-metric consistency ----
     metric_rhos = []
     for m in Z_METRICS:
@@ -123,6 +148,36 @@ def main():
         df["z_mean"], df["ogt"], [df[c] for c in COVARS])
     raw_ogt, _ = spearmanr(df["z_mean"], df["ogt"])
     nested = nested_regression_delta(df, "tm", COVARS, "z_mean")
+
+    # ---- 7. Meta-regression: does Z-Tm coupling strength vary with OGT? ----
+    within_ogt_vals = np.array([w[1] for w in within])
+    within_r_vals   = np.array([w[3] for w in within])
+    rho_meta, p_meta_param = spearmanr(within_r_vals, within_ogt_vals)
+
+    meta_perm_rhos = np.array([
+        spearmanr(rng.permuted(within_r_vals), within_ogt_vals)[0]
+        for _ in range(N_PERM)
+    ])
+    p_meta_perm = max(float((np.abs(meta_perm_rhos) >= abs(rho_meta)).mean()), 1.0 / N_PERM)
+
+    domain_rhos: dict = defaultdict(list)
+    for o, ogt_val, n, r, p in within:
+        domain_rhos[DOMAIN.get(o, "Unknown")].append(r)
+
+    domain_means = {d: float(np.mean(rs)) for d, rs in domain_rhos.items()}
+
+    # ---- Verdict strings ----
+    ogt_verdict = "retains" if pr_ogt > 0 and pp_ogt < 0.05 else "does NOT retain"
+    tm_verdict = "significantly predicts" if nested['p_value'] < 0.05 else "does NOT significantly predict"
+    verdict_md = (
+        f"**Cross-species OGT verdict:** Z {ogt_verdict} a significant positive association "
+        f"with OGT after controlling for bulk charge composition "
+        f"(partial ρ = {pr_ogt:+.3f}, p = {pp_ogt:.2e}).\n\n"
+        f"**Within-organism stability verdict:** Z {tm_verdict} individual protein Tm beyond "
+        f"composition (ΔR² = {nested['delta_r2']:+.4f}, p = {nested['p_value']:.2e}); "
+        f"note the effect size is small ({nested['delta_r2']*100:.2f}% of Tm variance) "
+        f"despite high significance at N = {len(df):,}."
+    )
 
     # ---- Figures ----
     f1, ax = plt.subplots(figsize=(7, 5))
@@ -166,6 +221,28 @@ def main():
                  f"pooled (organism-demeaned) ρ={r_pool:+.3f}, p={p_pool:.2e}")
     img_within = fig_b64(f2)
 
+    _color_map = {"Bacteria": "#e74c3c", "Eukaryota": "#2c3e50",
+                  "Archaea": "#f39c12", "Unknown": "#95a5a6"}
+    f_meta, ax = plt.subplots(figsize=(7, 5))
+    seen_domains: set = set()
+    for o, ogt_val, n, r, p in within:
+        d = DOMAIN.get(o, "Unknown")
+        label = d if d not in seen_domains else None
+        seen_domains.add(d)
+        ax.scatter(ogt_val, r, s=max(30, n / 50), color=_color_map.get(d, "#95a5a6"),
+                   label=label, zorder=3)
+        ax.annotate(o.split()[0], (ogt_val, r), fontsize=7,
+                    xytext=(4, 4), textcoords="offset points")
+    ax.axhline(0, color="#333", lw=0.8)
+    ax.set_xlabel("Optimal growth temperature (°C)")
+    ax.set_ylabel("Within-species Spearman ρ(Z, Tm)")
+    ax.set_title(
+        f"Meta-regression: Z–Tm coupling strength vs OGT\n"
+        f"Spearman ρ={rho_meta:+.3f}, perm p={p_meta_perm:.4f}")
+    ax.legend(fontsize=8)
+    ax.grid(True, lw=0.4, color="#ccc")
+    img_meta = fig_b64(f_meta)
+
     f3, ax = plt.subplots(figsize=(5, 4.5))
     ax.bar(["composition\nonly", "+ z_mean"],
            [nested["r2_base"], nested["r2_full"]],
@@ -185,6 +262,9 @@ def main():
         f"| {m} | {r:+.3f} | {p:.3f} |" for m, r, p in metric_rhos)
     sens_rows = "\n".join(
         f"| {c} | {n} | {r:+.3f} |" for c, n, r in sensitivity)
+    domain_rows = "\n".join(
+        f"| {d} | {float(np.mean(rs)):+.3f} | {len(rs)} |"
+        for d, rs in sorted(domain_rhos.items()))
 
     md = f"""# Cross-Species OGT Analysis
 
@@ -200,6 +280,7 @@ Phylogenetic note: the {len(org)} qualifying organisms span {n_eff} coarse phylo
 ## 2. LOO robustness
 Dropping each organism in turn: ρ range [{loo_min:+.3f}, {loo_max:+.3f}] (full ρ = {rho_org:+.3f}).
 {'Signal holds (positive ρ) across all leave-one-out subsets.' if loo_min > 0 else 'Signal flips when at least one organism is dropped — see table.'}
+{collapse_note}
 
 | Dropped organism | ρ(mean Z, OGT) |
 |-----------------|---------------|
@@ -238,7 +319,17 @@ Note: partial Spearman and nested regression are computed at protein level (N �
 
 ![delta](data:image/png;base64,{img_delta})
 
-**Verdict:** Z {'retains' if pr_ogt > 0 and pp_ogt < 0.05 else 'does NOT retain'} a significant positive association with thermal stability after controlling for bulk charge composition.
+## 7. Organism-specificity: does Z–Tm coupling vary with OGT? (Meta-regression)
+
+Spearman ρ(ρ_within, OGT) = **{rho_meta:+.3f}** (perm p = {p_meta_perm:.4f}, n = {len(within)} organisms). A positive value means the Z–Tm coupling is stronger in warmer organisms; negative means it weakens at higher OGT.
+
+| Domain | Mean ρ(Z, Tm) | N organisms |
+|--------|-------------:|------------:|
+{domain_rows}
+
+![meta](data:image/png;base64,{img_meta})
+
+{verdict_md}
 """
     MD.write_text(md)
     print(f"Wrote {MD}")
@@ -249,6 +340,8 @@ Note: partial Spearman and nested regression are computed at protein level (N �
     print(f"  pooled within-org rho={r_pool:+.3f} p={p_pool:.2e}")
     print(f"  partial rho(Z,OGT|comp)={pr_ogt:+.3f} p={pp_ogt:.2e}")
     print(f"  nested deltaR2={nested['delta_r2']:+.4f} p={nested['p_value']:.2e}")
+    print(f"  meta-regression rho(within_r,OGT)={rho_meta:+.3f} perm-p={p_meta_perm:.4f}")
+    print(f"  domain means: { {d: round(v,3) for d,v in sorted(domain_means.items())} }")
 
     # ---- PDF ----
     try:
