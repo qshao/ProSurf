@@ -1,34 +1,39 @@
 # configs/control_set.yaml
-# Phase-1 validation controls.
-# IMPORTANT: confirm/replace these accessions against literature before trusting AUROC.
-# Positives: proteins with expected charge-rich, balanced (zwitterionic) surfaces.
-#   Criteria: high density of both Lys/Arg AND Asp/Glu on solvent-exposed surface.
-# Negatives: proteins with charge-poor or strongly charge-segregated surfaces.
+# Phase-1 validation controls — curated from the Meltome Atlas (Jarzab et al. 2020, Nat Methods).
+# All 12 proteins are human intracellular proteins with measured Tm values (TPP in cell lysates)
+# and confirmed AF2 structures (model v6, verified June 2026).
+#
+# Positives: Tm >= 66°C (thermostable), measured across >=5 independent datasets.
+# Negatives: Tm <= 44.3°C (thermolabile), measured across >=5 independent datasets.
+# Delta Tm between classes: ~21.7°C.
+#
+# Source: Supplementary Table S2, sheets ma_0018–ma_0077 (human datasets).
+# Data file: MOESM4 from https://doi.org/10.1038/s41592-020-0801-4
 
 positives:
-  # Human serum albumin — very charge-dense, balanced acidic/basic residues, thermostable
-  - P02768
-  # Human lysozyme C — compact, charge-rich globular protein, thermostable
-  - P61626
-  # Human carbonic anhydrase 2 — stable enzyme, mixed surface charges
-  - P00918
-  # Ubiquitin — small, highly stable, surface charges well distributed
-  - P0CG48
-  # Human superoxide dismutase 1 — stable homodimer, balanced surface charges
-  - P00441
-  # Calmodulin — charge-rich Ca2+-binding protein
-  - P0DP23
+  # TKT (Transketolase) — Tm=66.0°C, n=17 datasets — metabolic enzyme, most reliable
+  - P29401
+  # PRRC1 (Proline-rich coiled-coil 1) — Tm=66.8°C, n=13 datasets
+  - Q96M27
+  # PDXP (Chronophin) — Tm=66.1°C, n=9 datasets — pyridoxal phosphatase
+  - Q96GD0
+  # GOT1 (Aspartate aminotransferase, cytoplasmic) — Tm=66.8°C, n=7 datasets
+  - P17174
+  # PLA2G15 (Lysosomal phospholipase A2) — Tm=67.8°C, n=7 datasets
+  - Q8NCC3
+  # RANBP3 (Ran-binding protein 3) — Tm=68.4°C, n=5 datasets — highest confirmed Tm
+  - Q9H6Z4
 
 negatives:
-  # Insulin — very small, minimal surface, charge-poor (mostly hydrophobic core)
-  - P01308
-  # Myoglobin — mostly hydrophobic exterior, few surface charges
-  - P02144
-  # Human prion protein — charge-poor N-terminal domain, known aggregation-prone
-  - P04156
-  # Glucagon — small peptide, minimal surface
-  - P01275
-  # Human amyloid beta — charge-poor, aggregation-prone, low stability
-  - P05067
-  # Alpha-synuclein — IDP, charge-segregated (acidic C-term, basic N-term)
-  - P37840
+  # GCN1 (Stalled ribosome sensor) — Tm=44.3°C, n=22 datasets — best-supported low-Tm
+  - Q92616
+  # ELF1 (ETS transcription factor Elf-1) — Tm=44.2°C, n=12 datasets
+  - P32519
+  # ARMC6 (Armadillo repeat protein 6) — Tm=43.2°C, n=11 datasets
+  - Q6NXE6
+  # SKA3 (Spindle/kinetochore-associated protein 3) — Tm=44.0°C, n=10 datasets
+  - Q8IX90
+  # NAB2 (NGFI-A-binding protein 2) — Tm=43.2°C, n=6 datasets — transcription repressor
+  - Q15742
+  # KRT1 (Keratin type II cytoskeletal 1) — Tm=43.2°C, n=5 datasets — fibrous structural
+  - P04264
