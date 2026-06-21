@@ -42,7 +42,7 @@ def species_datasets(s1_path: Path) -> dict:
         if not r or not r[0]:
             continue
         did = str(r[0]).replace("ma:", "ma_")
-        org = r[org_idx]
+        org = str(r[org_idx]).strip()
         ogt = r[ogt_idx]
         if org is None or not isinstance(ogt, (int, float)):
             continue
