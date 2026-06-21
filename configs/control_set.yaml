@@ -1,7 +1,8 @@
 # configs/control_set.yaml
-# 50-protein Meltome Atlas control set (Jarzab et al. 2020, Nat Methods).
-# Positives: Tm >= 64°C; Negatives: Tm <= 44.5°C. All confirmed in AF2 (v6).
-# Tm values measured by TPP in human cell lysates (n >= 3 independent datasets).
+# 200-protein Meltome Atlas pilot (Jarzab et al. 2020, Nat Methods).
+# Positives: Tm >= 62°C (25 existing + 75 new = 100 total)
+# Negatives: Tm <= 46°C (25 existing + 75 new = 100 total)
+# Proteins < 150aa excluded. All confirmed in AF2 model v6.
 
 positives:
   - P29401  # TKT, Tm=66.0°C, n=17
@@ -29,6 +30,81 @@ positives:
   - P00491  # PNP, Tm=65.5°C, n=11
   - P55072  # VCP, Tm=65.4°C, n=16
   - J3QTA6  # CHCHD6, Tm=65.4°C, n=3
+  - P00326  # ADH1C, Tm=65.3°C, n=5
+  - P02774  # GC, Tm=65.3°C, n=3
+  - P09467  # FBP1, Tm=65.3°C, n=4
+  - Q6P587  # FAHD1, Tm=65.3°C, n=6
+  - P46926  # GNPDA1, Tm=65.2°C, n=12
+  - P16930  # FAH, Tm=65.2°C, n=13
+  - Q9NTX5  # ECHDC1, Tm=65.1°C, n=3
+  - P08294  # SOD3, Tm=65.0°C, n=5
+  - P23434  # GCSH, Tm=64.9°C, n=5
+  - P01877  # IGHA2, Tm=64.8°C, n=3
+  - Q9NTN3  # SLC35D1, Tm=64.8°C, n=4
+  - E9PQ91  # SC5D, Tm=64.7°C, n=3
+  - Q16270  # IGFBP7, Tm=64.4°C, n=3
+  - P60900  # PSMA6, Tm=64.4°C, n=7
+  - Q96PE7  # MCEE, Tm=64.2°C, n=14
+  - Q9H330  # TMEM245, Tm=64.2°C, n=11
+  - Q03154  # ACY1, Tm=64.1°C, n=8
+  - Q9NXG6  # P4HTM, Tm=64.1°C, n=3
+  - P53801  # PTTG1IP, Tm=64.1°C, n=4
+  - Q32Q12  # NME1-NME2, Tm=64.0°C, n=9
+  - P50053  # KHK, Tm=64.0°C, n=15
+  - F8W1P7  # SLC11A2, Tm=63.9°C, n=3
+  - B2R5P6  # ?, Tm=63.9°C, n=3
+  - Q9C0H2  # TTYH3, Tm=63.9°C, n=7
+  - O00757  # FBP2, Tm=63.9°C, n=5
+  - Q15291  # RBBP5, Tm=63.8°C, n=15
+  - Q9P2K5  # MYEF2, Tm=63.8°C, n=5
+  - P04075  # ALDOA, Tm=63.8°C, n=16
+  - Q8N1S5  # SLC39A11, Tm=63.8°C, n=3
+  - Q8IWW8  # ADHFE1, Tm=63.8°C, n=3
+  - C9JDS9  # TUBA4A, Tm=63.8°C, n=3
+  - P02771  # AFP, Tm=63.7°C, n=6
+  - Q06278  # AOX1, Tm=63.7°C, n=6
+  - P22304  # IDS, Tm=63.7°C, n=4
+  - P27338  # MAOB, Tm=63.7°C, n=4
+  - P08397  # HMBS, Tm=63.7°C, n=5
+  - Q00577  # PURA, Tm=63.6°C, n=14
+  - Q96IZ7  # RSRC1, Tm=63.6°C, n=5
+  - O00268  # TAF4, Tm=63.6°C, n=4
+  - P42574  # CASP3, Tm=63.5°C, n=6
+  - Q06136  # KDSR, Tm=63.5°C, n=7
+  - Q04756  # HGFAC, Tm=63.5°C, n=4
+  - Q14195  # DPYSL3, Tm=63.5°C, n=6
+  - O15126  # SCAMP1, Tm=63.5°C, n=5
+  - P28332  # ADH6, Tm=63.4°C, n=4
+  - Q15223  # NECTIN1, Tm=63.4°C, n=3
+  - Q99623  # PHB2, Tm=63.4°C, n=6
+  - Q9UNN8  # PROCR, Tm=63.4°C, n=9
+  - P31350  # RRM2, Tm=63.3°C, n=13
+  - P30825  # SLC7A1, Tm=63.3°C, n=3
+  - Q96SL1  # SLC49A4, Tm=63.3°C, n=3
+  - Q96J88  # EPSTI1, Tm=63.3°C, n=3
+  - P42765  # ACAA2, Tm=63.2°C, n=20
+  - Q15493  # RGN, Tm=63.2°C, n=6
+  - O00391  # QSOX1, Tm=63.2°C, n=6
+  - P01857  # IGHG1, Tm=63.2°C, n=5
+  - B7Z779  # ?, Tm=63.1°C, n=3
+  - Q9NVC3  # SLC38A7, Tm=63.1°C, n=4
+  - Q8TEA8  # DTD1, Tm=63.1°C, n=7
+  - O43583  # DENR, Tm=63.1°C, n=9
+  - Q14207  # NPAT, Tm=63.1°C, n=4
+  - P78330  # PSPH, Tm=63.1°C, n=14
+  - Q6YHK3  # CD109, Tm=63.0°C, n=4
+  - Q9BX67  # JAM3, Tm=63.0°C, n=4
+  - P28072  # PSMB6, Tm=63.0°C, n=6
+  - P49720  # PSMB3, Tm=63.0°C, n=6
+  - O95980  # RECK, Tm=62.9°C, n=4
+  - C9JYY6  # NRCAM, Tm=62.9°C, n=7
+  - P52655  # GTF2A1, Tm=62.9°C, n=6
+  - Q9H7F4  # TMEM185B, Tm=62.9°C, n=3
+  - Q8NC54  # KCT2, Tm=62.8°C, n=3
+  - P13798  # APEH, Tm=62.8°C, n=8
+  - H7C1U8  # APOO, Tm=62.8°C, n=5
+  - Q6UVY6  # MOXD1, Tm=62.8°C, n=3
+  - P42126  # ECI1, Tm=62.8°C, n=6
 
 negatives:
   - Q92616  # GCN1, Tm=44.3°C, n=22
@@ -56,3 +132,78 @@ negatives:
   - Q86U86  # PBRM1, Tm=44.5°C, n=4
   - B5MCT9  # STXBP4, Tm=44.5°C, n=3
   - Q5SY16  # NOL9, Tm=44.5°C, n=5
+  - Q5JU21  # FPGS, Tm=44.5°C, n=4
+  - A6NFQ2  # TCAF2, Tm=44.5°C, n=5
+  - F5GX28  # KDM4B, Tm=44.6°C, n=4
+  - Q15555  # MAPRE2, Tm=44.6°C, n=10
+  - Q96JH7  # VCPIP1, Tm=44.6°C, n=16
+  - Q86UY6  # NAA40, Tm=44.7°C, n=6
+  - O75151  # PHF2, Tm=44.7°C, n=3
+  - Q9UNF1  # MAGED2, Tm=44.7°C, n=17
+  - O95835  # LATS1, Tm=44.8°C, n=7
+  - Q9NS87  # KIF15, Tm=44.8°C, n=8
+  - Q8N653  # LZTR1, Tm=44.8°C, n=5
+  - Q8IY22  # CMIP, Tm=44.8°C, n=7
+  - Q9UNS1  # TIMELESS, Tm=44.9°C, n=14
+  - Q9NYH9  # UTP6, Tm=44.9°C, n=9
+  - P42680  # TEC, Tm=44.9°C, n=7
+  - Q8IVS8  # GLYCTK, Tm=45.0°C, n=5
+  - Q8WVB6  # CHTF18, Tm=45.0°C, n=6
+  - Q13671  # RIN1, Tm=45.0°C, n=4
+  - Q13148  # TARDBP, Tm=45.0°C, n=22
+  - E7EPP7  # STXBP4, Tm=45.0°C, n=8
+  - C9JW69  # RCC1, Tm=45.1°C, n=6
+  - Q9NUQ8  # ABCF3, Tm=45.1°C, n=10
+  - Q9UK39  # NOCT, Tm=45.1°C, n=5
+  - E5RIK9  # MTERF3, Tm=45.1°C, n=3
+  - Q86V21  # AACS, Tm=45.1°C, n=16
+  - Q9Y2H6  # FNDC3A, Tm=45.1°C, n=12
+  - O60930  # RNASEH1, Tm=45.1°C, n=4
+  - Q9HB19  # PLEKHA2, Tm=45.1°C, n=10
+  - Q86Y56  # DNAAF5, Tm=45.1°C, n=17
+  - Q13472  # TOP3A, Tm=45.2°C, n=3
+  - Q9Y5N6  # ORC6, Tm=45.2°C, n=8
+  - Q14690  # PDCD11, Tm=45.2°C, n=8
+  - B4DJ07  # ?, Tm=45.2°C, n=3
+  - Q9H4E7  # DEF6, Tm=45.2°C, n=9
+  - Q7KZF4  # SND1, Tm=45.2°C, n=22
+  - Q9H4L5  # OSBPL3, Tm=45.3°C, n=11
+  - Q9BVP2  # GNL3, Tm=45.3°C, n=7
+  - Q14CZ7  # FASTKD3, Tm=45.3°C, n=6
+  - Q9NX09  # DDIT4, Tm=45.3°C, n=4
+  - Q8IWR0  # ZC3H7A, Tm=45.3°C, n=7
+  - G5E975  # SMARCB1, Tm=45.3°C, n=7
+  - E7EMD6  # AKAP10, Tm=45.3°C, n=7
+  - B4E0T2  # ?, Tm=45.3°C, n=13
+  - G3V167  # PARP2, Tm=45.4°C, n=6
+  - Q01780  # EXOSC10, Tm=45.4°C, n=11
+  - J3QRU8  # GIT1, Tm=45.4°C, n=3
+  - Q92830  # KAT2A, Tm=45.4°C, n=3
+  - Q99504  # EYA3, Tm=45.4°C, n=13
+  - Q8WXW3  # PIBF1, Tm=45.4°C, n=8
+  - Q9UHR6  # ZNHIT2, Tm=45.4°C, n=12
+  - O14646  # CHD1, Tm=45.4°C, n=8
+  - E9PKP7  # UBTF, Tm=45.4°C, n=5
+  - Q7L3V2  # RTL10, Tm=45.4°C, n=3
+  - Q8TF46  # DIS3L, Tm=45.4°C, n=4
+  - Q6STE5  # SMARCD3, Tm=45.5°C, n=5
+  - Q9BZV1  # UBXN6, Tm=45.5°C, n=3
+  - Q99856  # ARID3A, Tm=45.5°C, n=12
+  - E9PL17  # CLP1, Tm=45.5°C, n=12
+  - Q86U06  # RBM23, Tm=45.5°C, n=4
+  - P16157  # ANK1, Tm=45.5°C, n=6
+  - P30307  # CDC25C, Tm=45.5°C, n=4
+  - Q32P41  # TRMT5, Tm=45.5°C, n=18
+  - F5H4S8  # NFATC1, Tm=45.5°C, n=5
+  - B1AKJ6  # OSBPL9, Tm=45.5°C, n=9
+  - Q05823  # RNASEL, Tm=45.5°C, n=6
+  - H0Y759  # BAG6, Tm=45.5°C, n=4
+  - Q15233  # NONO, Tm=45.6°C, n=14
+  - B4DGM3  # ?, Tm=45.6°C, n=3
+  - Q9H981  # ACTR8, Tm=45.6°C, n=10
+  - Q9H2A2  # ALDH8A1, Tm=45.6°C, n=4
+  - P52292  # KPNA2, Tm=45.6°C, n=20
+  - Q9P2D1  # CHD7, Tm=45.6°C, n=5
+  - P40692  # MLH1, Tm=45.6°C, n=14
+  - Q8WYA6  # CTNNBL1, Tm=45.6°C, n=8
+  - B5MCF9  # PES1, Tm=45.6°C, n=17
