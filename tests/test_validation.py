@@ -3,7 +3,7 @@ from prosurf.validate.synthetic import make_synthetic
 from prosurf.validate.controls import protein_zwit_score, auroc
 
 def test_synthetic_ordering():
-    cfg = MetricConfig(patch_radius=8.0)
+    cfg = MetricConfig()
     alt = protein_zwit_score(make_synthetic("alternating", 12), cfg)
     seg = protein_zwit_score(make_synthetic("segregated", 12), cfg)
     free = protein_zwit_score(make_synthetic("charge_free", 12), cfg)

@@ -5,7 +5,7 @@ from prosurf.surface.charges import Charge
 import prosurf.metric.engine_a as ea
 
 def test_score_locations_zwitterionic_beats_segregated(monkeypatch):
-    cfg = MetricConfig(patch_radius=8.0)
+    cfg = MetricConfig()
     zwit = [Charge(i, (1 if i % 2 == 0 else -1), 1.0, np.array([float(i)*3, 0., 0.]))
             for i in range(6)]
     seg = [Charge(i, 1, 1.0, np.array([float(i)*3, 0., 0.])) for i in range(3)] + \

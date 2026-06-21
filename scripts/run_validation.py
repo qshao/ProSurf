@@ -22,7 +22,7 @@ def main():
     structs = [(fetch_af2(a, paths.data_dir), a) for a in cs["positives"] + cs["negatives"]]
     lines = [f"# Stage-A Validation Report", f"", f"AUROC (z_max, pos vs neg): {au:.3f}", ""]
     for param, vals in [("rsasa_threshold", [0.15, 0.20, 0.25]),
-                        ("patch_radius", [8.0, 10.0, 12.0]),
+                        ("patch_radius_frac", [0.40, 0.55, 0.70]),
                         ("his_weight", [0.0, 0.05, 0.1])]:
         df = sweep_parameter(structs, cfg, param, vals)
         lines.append(f"- {param}: ranking stability (Spearman) = {ranking_stability(df):.3f}")

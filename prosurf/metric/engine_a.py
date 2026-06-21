@@ -8,6 +8,8 @@ from prosurf.surface.sasa import surface_residue_ids
 
 LocationScore = namedtuple("LocationScore", ["res_id", "z", "n_pos", "n_neg", "xyz"])
 
+_MIN_PATCH_RADIUS = 8.0  # Å floor so mixing sees at least a few neighbors
+
 def score_charges_a(charges, cfg):
     if not charges:
         return []
@@ -15,12 +17,17 @@ def score_charges_a(charges, cfg):
     signs = np.array([c.sign for c in charges])
     weights = np.array([c.weight for c in charges])
     tree = cKDTree(coords)
-    disk_area = np.pi * cfg.patch_radius ** 2
+
+    # Adaptive radius: scale with the spatial extent of the charge cloud
+    centroid = coords.mean(axis=0)
+    R_g = float(np.sqrt(((coords - centroid) ** 2).sum(axis=1).mean()))
+    r = max(cfg.patch_radius_frac * R_g, _MIN_PATCH_RADIUS)
+    disk_area = np.pi * r ** 2
 
     # First pass: collect (n_pos, n_neg, region, idx) per location
     per_location = []
     for i, c in enumerate(charges):
-        idx = tree.query_ball_point(coords[i], cfg.patch_radius)
+        idx = tree.query_ball_point(coords[i], r)
         region = [charges[j] for j in idx]
         n_pos = float(np.sum(weights[idx] * (signs[idx] > 0)))
         n_neg = float(np.sum(weights[idx] * (signs[idx] < 0)))
@@ -35,7 +42,7 @@ def score_charges_a(charges, cfg):
     for (c, idx, region, n_pos, n_neg), raw_d in zip(per_location, raw_densities):
         B = balance(n_pos, n_neg)
         D_hat = raw_d / d_max
-        M = mixing_euclidean(region, neighbor_radius=cfg.patch_radius / 2)
+        M = mixing_euclidean(region, neighbor_radius=r / 2)
         scores.append(LocationScore(c.res_id, B * D_hat * M, n_pos, n_neg, c.xyz))
     return scores
 
