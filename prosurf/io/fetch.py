@@ -14,5 +14,5 @@ def fetch_af2(uniprot_id: str, out_dir: Path) -> Path:
         return dest
     resp = requests.get(af2_url(uniprot_id), timeout=60)
     resp.raise_for_status()
-    dest.write_text(resp.text)
+    dest.write_bytes(resp.content)
     return dest

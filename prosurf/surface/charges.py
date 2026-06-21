@@ -36,9 +36,15 @@ def assign_charges(arr, surface_ids, his_weight=0.0):
             xyz = _center(arr, rid, ["ND1", "NE2"])
             if xyz is not None: charges.append(Charge(int(rid), 1, his_weight, xyz))
     # termini as point charges at terminal CA-adjacent atoms
+    # Skip terminus charge if a same-sign sidechain charge is already assigned
+    # (e.g. N-terminus +1 is redundant if the first residue is LYS or ARG)
     nterm, cterm = res_ids[0], res_ids[-1]
+    first_res_has_pos = any(c.res_id == int(nterm) and c.sign == 1 for c in charges)
+    last_res_has_neg = any(c.res_id == int(cterm) and c.sign == -1 for c in charges)
     n_xyz = _atom_coord(arr, nterm, "N")
     c_xyz = _atom_coord(arr, cterm, "C")
-    if n_xyz is not None: charges.append(Charge(int(nterm), 1, 1.0, n_xyz))
-    if c_xyz is not None: charges.append(Charge(int(cterm), -1, 1.0, c_xyz))
+    if n_xyz is not None and not first_res_has_pos:
+        charges.append(Charge(int(nterm), 1, 1.0, n_xyz))
+    if c_xyz is not None and not last_res_has_neg:
+        charges.append(Charge(int(cterm), -1, 1.0, c_xyz))
     return charges

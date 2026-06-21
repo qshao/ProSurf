@@ -5,7 +5,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 
-def render_patch_map(arr, scores, out_png):
+def render_patch_map(scores, out_png):
     out_png = Path(out_png)
     pts = np.array([s.xyz for s in scores]) if scores else np.zeros((1, 3))
     vals = np.array([s.z for s in scores]) if scores else np.array([0.0])

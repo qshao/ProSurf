@@ -8,6 +8,7 @@ class MetricConfig:
     his_weight: float = 0.0
     z_percentile: float = 90.0
     seed: int = 0
+    adjacency_radius: float = 8.0
 
 @dataclass
 class PathsConfig:

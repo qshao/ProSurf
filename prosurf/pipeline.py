@@ -25,8 +25,8 @@ def analyze_structure(path, uniprot, cfg, engine="a"):
     cfg : MetricConfig
         Metric configuration (thresholds, weights, etc.).
     engine : str, optional
-        Scoring engine to use. Currently only "a" is supported (default: "a").
-        Task 16 will add engine "b" and a selector here.
+        Scoring engine to use: 'a' (composite index) or 'b' (bivariate
+        cross-colocation mixing). Default: 'a'.
 
     Returns
     -------
@@ -37,7 +37,7 @@ def analyze_structure(path, uniprot, cfg, engine="a"):
     scorer = score_locations_a if engine == "a" else score_locations_b
     scores = scorer(arr, cfg)
 
-    patches = cluster_patches(scores, cfg)
+    patches = cluster_patches(scores, cfg, adjacency_radius=cfg.adjacency_radius)
     _, sasa = residue_sasa(arr)
     total_area = float(np.nansum(sasa))
     n_locations = len(surface_residue_ids(arr, cfg.rsasa_threshold))
@@ -45,7 +45,7 @@ def analyze_structure(path, uniprot, cfg, engine="a"):
     return patches, ps
 
 
-def run_pilot(uniprots, paths, cfg):
+def run_pilot(uniprots, paths, cfg, engine: str = "a"):
     """
     Fetch AF2 structures for each UniProt ID, analyze them, cache patch lists,
     and return a DataFrame with one row per protein.
@@ -58,6 +58,9 @@ def run_pilot(uniprots, paths, cfg):
         Paths for data and cache directories.
     cfg : MetricConfig
         Metric configuration.
+    engine : str, optional
+        Scoring engine to use: 'a' (composite index) or 'b' (bivariate
+        cross-colocation mixing). Default: 'a'.
 
     Returns
     -------
@@ -68,7 +71,7 @@ def run_pilot(uniprots, paths, cfg):
     rows = []
     for up in uniprots:
         pdb = fetch_af2(up, paths.data_dir)
-        patches, ps = analyze_structure(pdb, up, cfg)
+        patches, ps = analyze_structure(pdb, up, cfg, engine=engine)
         with open(paths.cache_dir / f"{up}_patches.pkl", "wb") as fh:
             pickle.dump(patches, fh)
         rows.append(ps._asdict())

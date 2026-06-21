@@ -11,5 +11,5 @@ def test_render_creates_png(tmp_path):
     cfg = MetricConfig(z_percentile=0.0)
     arr = load_structure(Path("tests/data/mini.pdb"))
     scores = score_locations_a(arr, cfg)
-    out = render_patch_map(arr, scores, tmp_path / "map.png")
+    out = render_patch_map(scores, tmp_path / "map.png")
     assert out.exists() and out.stat().st_size > 0

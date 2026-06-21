@@ -16,17 +16,28 @@ def score_charges_a(charges, cfg):
     weights = np.array([c.weight for c in charges])
     tree = cKDTree(coords)
     disk_area = np.pi * cfg.patch_radius ** 2
-    scores = []
+
+    # First pass: collect (n_pos, n_neg, region, idx) per location
+    per_location = []
     for i, c in enumerate(charges):
         idx = tree.query_ball_point(coords[i], cfg.patch_radius)
         region = [charges[j] for j in idx]
         n_pos = float(np.sum(weights[idx] * (signs[idx] > 0)))
         n_neg = float(np.sum(weights[idx] * (signs[idx] < 0)))
+        per_location.append((c, idx, region, n_pos, n_neg))
+
+    # Compute raw densities and normalize (D̂ ∈ [0, 1])
+    raw_densities = np.array([density(n_pos + n_neg, disk_area)
+                               for _, _, _, n_pos, n_neg in per_location])
+    d_max = raw_densities.max() if raw_densities.max() > 0 else 1.0
+
+    scores = []
+    for (c, idx, region, n_pos, n_neg), raw_d in zip(per_location, raw_densities):
         B = balance(n_pos, n_neg)
-        D = density(n_pos + n_neg, disk_area)
+        D_hat = raw_d / d_max
         M = mixing_euclidean(region, neighbor_radius=cfg.patch_radius / 2)
-        scores.append(LocationScore(c.res_id, B * D * M, n_pos, n_neg, c.xyz))
-    return scores  # density normalization across dataset applied in aggregation
+        scores.append(LocationScore(c.res_id, B * D_hat * M, n_pos, n_neg, c.xyz))
+    return scores
 
 def score_locations_a(arr, cfg):
     sids = surface_residue_ids(arr, cfg.rsasa_threshold)
