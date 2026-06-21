@@ -1,0 +1,20 @@
+# configs/control_set.yaml
+# Phase-1 validation controls.
+# Positives: surfaces expected zwitterionic
+# (charge-rich + balanced, e.g. halophilic/extremophile).
+# Negatives: charge-segregated or charge-poor surfaces.
+# confirm/replace these accessions against literature before trusting AUROC.
+positives:
+  - P0A7L8   # ribosomal-like acidic/basic balanced (placeholder rationale)
+  - P00509
+  - P0AEX9
+  - P02769
+  - P61626
+  - P00698
+negatives:
+  - P01308   # insulin, small / charge-poor
+  - P69905   # hemoglobin alpha
+  - P0DTC2
+  - P02649
+  - P00766
+  - P01112
