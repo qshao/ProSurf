@@ -51,3 +51,26 @@ def ranking_stability(df, score_col="z_mean"):
         rho, _ = spearmanr(pivot[a], pivot[b])
         rhos.append(rho)
     return float(sum(rhos) / len(rhos)) if rhos else 1.0
+
+
+def engine_agreement(structures, cfg, score_col="z_mean"):
+    """Spearman ρ between per-protein engine-A and engine-B scores.
+
+    Parameters
+    ----------
+    structures : list of (path, uniprot) tuples
+    cfg        : MetricConfig
+    score_col  : str — ProteinScore field to compare (default: 'z_mean')
+
+    Returns
+    -------
+    float — Spearman ρ between engine-A and engine-B scores
+    """
+    a, b = [], []
+    for path, uniprot in structures:
+        _, sa = analyze_structure(path, uniprot, cfg, engine="a")
+        _, sb = analyze_structure(path, uniprot, cfg, engine="b")
+        a.append(getattr(sa, score_col))
+        b.append(getattr(sb, score_col))
+    rho, _ = spearmanr(a, b)
+    return float(rho)
