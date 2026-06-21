@@ -1,20 +1,34 @@
 # configs/control_set.yaml
 # Phase-1 validation controls.
-# Positives: surfaces expected zwitterionic
-# (charge-rich + balanced, e.g. halophilic/extremophile).
-# Negatives: charge-segregated or charge-poor surfaces.
-# confirm/replace these accessions against literature before trusting AUROC.
+# IMPORTANT: confirm/replace these accessions against literature before trusting AUROC.
+# Positives: proteins with expected charge-rich, balanced (zwitterionic) surfaces.
+#   Criteria: high density of both Lys/Arg AND Asp/Glu on solvent-exposed surface.
+# Negatives: proteins with charge-poor or strongly charge-segregated surfaces.
+
 positives:
-  - P0A7L8   # ribosomal-like acidic/basic balanced (placeholder rationale)
-  - P00509
-  - P0AEX9
-  - P02769
+  # Human serum albumin — very charge-dense, balanced acidic/basic residues, thermostable
+  - P02768
+  # Human lysozyme C — compact, charge-rich globular protein, thermostable
   - P61626
-  - P00698
+  # Human carbonic anhydrase 2 — stable enzyme, mixed surface charges
+  - P00918
+  # Ubiquitin — small, highly stable, surface charges well distributed
+  - P0CG48
+  # Human superoxide dismutase 1 — stable homodimer, balanced surface charges
+  - P00441
+  # Calmodulin — charge-rich Ca2+-binding protein
+  - P0DP23
+
 negatives:
-  - P01308   # insulin, small / charge-poor
-  - P69905   # hemoglobin alpha
-  - P0DTC2
-  - P02649
-  - P00766
-  - P01112
+  # Insulin — very small, minimal surface, charge-poor (mostly hydrophobic core)
+  - P01308
+  # Myoglobin — mostly hydrophobic exterior, few surface charges
+  - P02144
+  # Human prion protein — charge-poor N-terminal domain, known aggregation-prone
+  - P04156
+  # Glucagon — small peptide, minimal surface
+  - P01275
+  # Human amyloid beta — charge-poor, aggregation-prone, low stability
+  - P05067
+  # Alpha-synuclein — IDP, charge-segregated (acidic C-term, basic N-term)
+  - P37840

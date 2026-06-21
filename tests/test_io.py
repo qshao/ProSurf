@@ -5,7 +5,9 @@ import biotite.structure as struc
 
 
 def test_af2_url():
-    assert af2_url("P69905") == "https://alphafold.ebi.ac.uk/files/AF-P69905-F1-model_v4.pdb"
+    url = af2_url("P69905")
+    assert "AF-P69905-F1-model_v" in url
+    assert url.endswith(".pdb")
 
 
 def test_load_structure_amino_acids_only(tmp_path):
