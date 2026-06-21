@@ -30,7 +30,7 @@ def nested_regression_delta(df, target, base_features, added_feature):
     """Compare OLS models target ~ base vs target ~ base + added_feature.
 
     Predictors are z-standardized. Returns dict: r2_base, r2_full, delta_r2,
-    f_stat, p_value (F-test for the single added term), added_coef (standardized).
+    f_stat, p_value (F-test for the single added term), added_coef (semi-standardized (X-standardized beta)).
     """
     y = df[target].to_numpy(float)
     n = len(y)

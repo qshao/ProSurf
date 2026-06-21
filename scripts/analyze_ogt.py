@@ -231,9 +231,10 @@ pooled (organism-demeaned) protein-level Spearman ρ(Z, Tm) = **{r_pool:+.3f}** 
 ![within](data:image/png;base64,{img_within})
 
 ## 6. Composition control (headline)
+Note: partial Spearman and nested regression are computed at protein level (N ≈ 34k), not organism level; OGT enters as a per-protein label inherited from organism membership.
 - Raw Spearman ρ(z_mean, OGT) = {raw_ogt:+.3f}
 - **Partial** ρ(z_mean, OGT | {', '.join(COVARS)}) = **{pr_ogt:+.3f}** (p = {pp_ogt:.2e})
-- Nested model of Tm: R²(composition) = {nested['r2_base']:.4f} → R²(+z_mean) = {nested['r2_full']:.4f}; **ΔR² = {nested['delta_r2']:+.4f}**, added-term p = {nested['p_value']:.2e}, standardized z_mean coef = {nested['added_coef']:+.3f}.
+- Nested model of Tm: R²(composition) = {nested['r2_base']:.4f} → R²(+z_mean) = {nested['r2_full']:.4f}; **ΔR² = {nested['delta_r2']:+.4f}**, added-term p = {nested['p_value']:.2e}, semi-standardized z_mean coef (X-standardized) = {nested['added_coef']:+.3f}.
 
 ![delta](data:image/png;base64,{img_delta})
 

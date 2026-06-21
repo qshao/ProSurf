@@ -41,10 +41,10 @@ def species_datasets(s1_path: Path) -> dict:
     for r in rows[1:]:
         if not r or not r[0]:
             continue
-        did = str(r[0]).replace("ma:", "ma_")
+        did = str(r[0]).replace("ma:", "ma_", 1)
         org = str(r[org_idx]).strip()
         ogt = r[ogt_idx]
-        if org is None or not isinstance(ogt, (int, float)):
+        if not org or not isinstance(ogt, (int, float)):
             continue
         d = out.setdefault(
             org,
