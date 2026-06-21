@@ -6,6 +6,7 @@ from pathlib import Path
 from prosurf.io.parse import load_structure
 from prosurf.io.fetch import fetch_af2
 from prosurf.metric.engine_a import score_locations_a
+from prosurf.metric.engine_b import score_locations_b
 from prosurf.patches.cluster import cluster_patches
 from prosurf.patches.aggregate import aggregate_protein
 from prosurf.surface.sasa import residue_sasa, surface_residue_ids
@@ -33,11 +34,8 @@ def analyze_structure(path, uniprot, cfg, engine="a"):
     """
     arr = load_structure(path)
 
-    # Select engine — currently only "a"; Task 16 will extend this
-    if engine == "a":
-        scores = score_locations_a(arr, cfg)
-    else:
-        raise ValueError(f"Unknown engine: {engine!r}. Currently supported: 'a'")
+    scorer = score_locations_a if engine == "a" else score_locations_b
+    scores = scorer(arr, cfg)
 
     patches = cluster_patches(scores, cfg)
     _, sasa = residue_sasa(arr)
