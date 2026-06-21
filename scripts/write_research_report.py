@@ -3,8 +3,8 @@
 Generate a comprehensive scientific research report for the ProSurf cross-species OGT analysis.
 
 Outputs:
-  data/ogt_research_report.md   — full markdown report with embedded figures
-  data/ogt_research_report.pdf  — PDF render via weasyprint + markdown
+  report/ogt_research_report.md  — full markdown report with embedded figures
+  report/ogt_research_report.pdf — PDF render via weasyprint + markdown
 """
 
 import base64
@@ -23,9 +23,11 @@ import numpy as np
 # ── paths ────────────────────────────────────────────────────────────────────
 REPO = Path(__file__).resolve().parent.parent
 DATA = REPO / "data"
+REPORT_DIR = REPO / "report"
+REPORT_DIR.mkdir(exist_ok=True)
 SOURCE_REPORT = DATA / "cross_species_report.md"
-OUT_MD = DATA / "ogt_research_report.md"
-OUT_PDF = DATA / "ogt_research_report.pdf"
+OUT_MD = REPORT_DIR / "ogt_research_report.md"
+OUT_PDF = REPORT_DIR / "ogt_research_report.pdf"
 
 
 # ── helper: encode figure to base64 PNG ──────────────────────────────────────
