@@ -42,7 +42,7 @@ def load_done():
 
 def load_failed():
     if FAILED.exists():
-        return set(FAILED.read_text().splitlines())
+        return {line for line in FAILED.read_text().splitlines() if line}
     return set()
 
 
@@ -93,7 +93,7 @@ def main():
 
     for t in targets:
         uid, organism = t["uniprot"], t["organism"]
-        if (uid, organism) in done or uid in failed:
+        if (uid, organism) in done or f"{uid}:{organism}" in failed:
             continue
         if args.limit:
             c = per_org_count.get(organism, 0)
@@ -105,8 +105,8 @@ def main():
         if organism == "Homo sapiens" and uid in seeded:
             s = seeded[uid]
             # Try to compute composition features from the cached PDB file.
-            comp = {"charged_frac": "", "surface_charged_frac": "",
-                    "net_charge_per_res": "", "surface_charge_density": ""}
+            comp = {"charged_frac": float("nan"), "surface_charged_frac": float("nan"),
+                    "net_charge_per_res": float("nan"), "surface_charge_density": float("nan")}
             existing_pdbs = list(paths.data_dir.glob(f"AF-{uid}-F1-model_v*.pdb"))
             if existing_pdbs:
                 try:
@@ -143,7 +143,7 @@ def main():
             n_res = len(struc.get_residues(arr)[0])
             if n_res < args.min_len:
                 with open(FAILED, "a") as ff:
-                    ff.write(uid + "\n")
+                    ff.write(f"{uid}:{organism}\n")
                 continue
             _, ps = analyze_structure(pdb, uid, cfg)
             comp = composition_features(arr, cfg)
@@ -163,7 +163,7 @@ def main():
                       f"z_mean={ps.z_mean:.3f})  {rate:.1f}/s", flush=True)
         except Exception as e:
             with open(FAILED, "a") as ff:
-                ff.write(uid + "\n")
+                ff.write(f"{uid}:{organism}\n")
             print(f"  FAIL {organism} {uid}: {e}", flush=True)
 
     print(f"Done. {n_new} new proteins scored -> {OUT_CSV}")
