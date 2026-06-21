@@ -1,39 +1,58 @@
 # configs/control_set.yaml
-# Phase-1 validation controls — curated from the Meltome Atlas (Jarzab et al. 2020, Nat Methods).
-# All 12 proteins are human intracellular proteins with measured Tm values (TPP in cell lysates)
-# and confirmed AF2 structures (model v6, verified June 2026).
-#
-# Positives: Tm >= 66°C (thermostable), measured across >=5 independent datasets.
-# Negatives: Tm <= 44.3°C (thermolabile), measured across >=5 independent datasets.
-# Delta Tm between classes: ~21.7°C.
-#
-# Source: Supplementary Table S2, sheets ma_0018–ma_0077 (human datasets).
-# Data file: MOESM4 from https://doi.org/10.1038/s41592-020-0801-4
+# 50-protein Meltome Atlas control set (Jarzab et al. 2020, Nat Methods).
+# Positives: Tm >= 64°C; Negatives: Tm <= 44.5°C. All confirmed in AF2 (v6).
+# Tm values measured by TPP in human cell lysates (n >= 3 independent datasets).
 
 positives:
-  # TKT (Transketolase) — Tm=66.0°C, n=17 datasets — metabolic enzyme, most reliable
-  - P29401
-  # PRRC1 (Proline-rich coiled-coil 1) — Tm=66.8°C, n=13 datasets
-  - Q96M27
-  # PDXP (Chronophin) — Tm=66.1°C, n=9 datasets — pyridoxal phosphatase
-  - Q96GD0
-  # GOT1 (Aspartate aminotransferase, cytoplasmic) — Tm=66.8°C, n=7 datasets
-  - P17174
-  # PLA2G15 (Lysosomal phospholipase A2) — Tm=67.8°C, n=7 datasets
-  - Q8NCC3
-  # RANBP3 (Ran-binding protein 3) — Tm=68.4°C, n=5 datasets — highest confirmed Tm
-  - Q9H6Z4
+  - P29401  # TKT, Tm=66.0°C, n=17
+  - Q96M27  # PRRC1, Tm=66.8°C, n=13
+  - Q96GD0  # PDXP, Tm=66.1°C, n=9
+  - P17174  # GOT1, Tm=66.8°C, n=7
+  - Q8NCC3  # PLA2G15, Tm=67.8°C, n=7
+  - Q9H6Z4  # RANBP3, Tm=68.4°C, n=5
+  - P78310  # CXADR, Tm=68.1°C, n=3
+  - Q6IE81  # JADE1, Tm=67.1°C, n=3
+  - Q9H0N0  # RAB6C, Tm=67.1°C, n=3
+  - P83369  # LSM11, Tm=67.0°C, n=3
+  - Q9NRN9  # METTL5, Tm=66.9°C, n=7
+  - Q5D862  # FLG2, Tm=66.9°C, n=3
+  - Q6NXT6  # TAPT1, Tm=66.8°C, n=7
+  - Q96RW7  # HMCN1, Tm=66.8°C, n=3
+  - O14556  # GAPDHS, Tm=66.5°C, n=3
+  - P29218  # IMPA1, Tm=66.3°C, n=4
+  - Q9BZD2  # SLC29A3, Tm=66.0°C, n=4
+  - P00505  # GOT2, Tm=65.8°C, n=15
+  - Q5T7W0  # ZNF618, Tm=65.8°C, n=3
+  - Q9H3H5  # DPAGT1, Tm=65.6°C, n=7
+  - Q7LG56  # RRM2B, Tm=65.6°C, n=7
+  - O75084  # FZD7, Tm=65.6°C, n=3
+  - P00491  # PNP, Tm=65.5°C, n=11
+  - P55072  # VCP, Tm=65.4°C, n=16
+  - J3QTA6  # CHCHD6, Tm=65.4°C, n=3
 
 negatives:
-  # GCN1 (Stalled ribosome sensor) — Tm=44.3°C, n=22 datasets — best-supported low-Tm
-  - Q92616
-  # ELF1 (ETS transcription factor Elf-1) — Tm=44.2°C, n=12 datasets
-  - P32519
-  # ARMC6 (Armadillo repeat protein 6) — Tm=43.2°C, n=11 datasets
-  - Q6NXE6
-  # SKA3 (Spindle/kinetochore-associated protein 3) — Tm=44.0°C, n=10 datasets
-  - Q8IX90
-  # NAB2 (NGFI-A-binding protein 2) — Tm=43.2°C, n=6 datasets — transcription repressor
-  - Q15742
-  # KRT1 (Keratin type II cytoskeletal 1) — Tm=43.2°C, n=5 datasets — fibrous structural
-  - P04264
+  - Q92616  # GCN1, Tm=44.3°C, n=22
+  - P32519  # ELF1, Tm=44.2°C, n=12
+  - Q6NXE6  # ARMC6, Tm=43.2°C, n=11
+  - Q8IX90  # SKA3, Tm=44.0°C, n=10
+  - Q15742  # NAB2, Tm=43.2°C, n=6
+  - P04264  # KRT1, Tm=43.2°C, n=5
+  - O94906  # PRPF6, Tm=43.4°C, n=4
+  - Q2KHR3  # QSER1, Tm=43.4°C, n=4
+  - B4E1N1  # ?, Tm=43.4°C, n=6
+  - Q9UBC3  # DNMT3B, Tm=43.5°C, n=4
+  - Q9UPP1  # PHF8, Tm=43.5°C, n=3
+  - E9PM19  # TYK2, Tm=43.7°C, n=3
+  - Q9Y4W2  # LAS1L, Tm=43.9°C, n=4
+  - Q9H147  # DNTTIP1, Tm=44.0°C, n=3
+  - C9J5V9  # YBX1, Tm=44.1°C, n=3
+  - Q9H633  # RPP21, Tm=44.2°C, n=3
+  - O95466  # FMNL1, Tm=44.2°C, n=5
+  - Q14781  # CBX2, Tm=44.2°C, n=3
+  - G8JL98  # TDG, Tm=44.2°C, n=7
+  - O15091  # PRORP, Tm=44.3°C, n=5
+  - Q8IZ40  # RCOR2, Tm=44.4°C, n=4
+  - B7Z3T9  # ?, Tm=44.4°C, n=3
+  - Q86U86  # PBRM1, Tm=44.5°C, n=4
+  - B5MCT9  # STXBP4, Tm=44.5°C, n=3
+  - Q5SY16  # NOL9, Tm=44.5°C, n=5
